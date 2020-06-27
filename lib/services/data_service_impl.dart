@@ -71,10 +71,11 @@ class DataServiceImpl extends DataService {
     if (result[0]) {
       covidDataArrived = true;
       covidData = CovidData.fromJson(jsonDecode(result[1]));
-      List bookmarkRes = await getDataOfBookmark(); 
+      List bookmarkRes = await getDataOfBookmark();
       countryBookmarks = Set();
       if (bookmarkRes[0]) {
-        if (bookmarkRes[1] is String) countryBookmarks.addAll(bookmarkRes[1].split(","));
+        if (bookmarkRes[1] is String && bookmarkRes[1] != "")
+          countryBookmarks.addAll(bookmarkRes[1].split(","));
       }
       genMapCovid(covidData.countries);
     }
@@ -129,7 +130,7 @@ class DataServiceImpl extends DataService {
   CountryDetails getCountryDataByCode3(String code) {
     if (this.countryCodePosMap3[code] == null) return null;
     return countryDetailsList[this.countryCodePosMap3[code]];
-  }  
+  }
 
   @override
   CovidData getCovidData() {

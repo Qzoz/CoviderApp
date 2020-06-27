@@ -50,21 +50,11 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
                 Positioned(
                   right: 0,
                   top: 0,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        widget.dataService.updateBookmark(covidData.countryCode,
-                            covidData.isBookrmarked == true);
-                        covidData.isBookrmarked =
-                            (covidData.isBookrmarked == true) ? false : true;
-                      });
-                    },
-                    child: Icon(
-                      (covidData.isBookrmarked == true)
-                          ? Icons.bookmark
-                          : Icons.bookmark_border,
-                      color: Colors.black,
-                    ),
+                  child: Icon(
+                    (covidData.isBookrmarked == true)
+                        ? Icons.bookmark
+                        : Icons.bookmark_border,
+                    color: Colors.black,
                   ),
                 ),
               ],

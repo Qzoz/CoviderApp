@@ -7,6 +7,7 @@ class CovidInfoModalFullScreen extends StatelessWidget {
     ThemeData themeData = Theme.of(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: themeData.primaryColor,
         appBar: AppBar(
           backgroundColor: themeData.primaryColor,
           elevation: 0.0,
@@ -23,21 +24,39 @@ class CovidInfoModalFullScreen extends StatelessWidget {
             style: TextStyle(color: themeData.accentColor),
           ),
         ),
-        body: Container(
-          padding: EdgeInsets.all(10.0),
-          child: ListView(
-            children: <Widget>[
-              FutureBuilder(
-                builder: (context, snapshot) {
-                  return (snapshot.data != null)
-                      ? Text(snapshot.data)
-                      : Text("Unable to load data");
-                },
-                future: readAssetsAboutCovidFile(),
-                initialData: "Unable to load data",
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: 30.0),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  child: ListView(
+                    padding: EdgeInsets.only(
+                        top: 15.0, left: 10.0, right: 10.0, bottom: 10.0),
+                    children: <Widget>[
+                      FutureBuilder(
+                        builder: (context, snapshot) {
+                          return (snapshot.data != null)
+                              ? Text(
+                                  snapshot.data,
+                                  textAlign: TextAlign.justify,
+                                )
+                              : Text("Unable to load data");
+                        },
+                        future: readAssetsAboutCovidFile(),
+                        initialData: "Unable to load data",
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

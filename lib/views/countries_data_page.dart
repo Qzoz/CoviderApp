@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:covider/models/covid.dart';
 import 'package:covider/services/data_service.dart';
 import 'package:covider/services/data_service_impl.dart';
@@ -104,6 +106,11 @@ class _CountryDataListPageState extends State<CountryDataListPage>
       if (res) {
         updateStateVars();
       }
+      Timer(Duration(seconds: 5), () {
+        setState(() {
+          isBookHintVisible = false;
+        });
+      });
     });
   }
 
@@ -130,6 +137,7 @@ class _CountryDataListPageState extends State<CountryDataListPage>
   }
 
   void _onPanelGesture() {
+    isBookHintVisible = false;
     animationController.fling(velocity: isHiddenRevealed ? -1.0 : 1.0);
     if (isHiddenRevealed) {
       setState(() {

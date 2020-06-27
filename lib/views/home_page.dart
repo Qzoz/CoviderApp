@@ -75,19 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
     (isBlackBox) ? fgColor = Colors.white : fgColor = Colors.black;
     (isBlackBox) ? bgColor = Colors.black : bgColor = Colors.grey[300];
     if (headIcon != null) {
-      head = Container(
-        height: 50,
-        width: 50,
-        decoration: BoxDecoration(
-          color: fgColor,
-          borderRadius: BorderRadius.all(Radius.circular(100.0)),
-        ),
-        child: Center(
-          child: Text(
-            headIcon,
-            style: TextStyle(color: bgColor, fontSize: 30.0, fontFamily: 'u_m'),
-          ),
-        ),
+      head = Text(
+        headIcon,
+        style: TextStyle(color: fgColor, fontSize: 20.0, fontFamily: 'u_m'),
       );
     }
     if (headImage != null) {
@@ -131,7 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
           );
   }
 
-  Widget getValWithUpdateVal(int val, int uVal, Color valColor) {
+  Widget getValWithUpdateVal(int val, int uVal, Color valColor,
+      {double fSize = 15.0, double iSize = 16.0}) {
     var iconsWidget;
     if (uVal > 0)
       iconsWidget = Icons.arrow_upward;
@@ -149,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
             val.toString(),
             textAlign: TextAlign.right,
             style:
-                TextStyle(color: valColor, fontFamily: 'u_m', fontSize: 15.0),
+                TextStyle(color: valColor, fontFamily: 'u_m', fontSize: fSize),
           ),
         ),
         Expanded(
@@ -160,10 +151,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 TextSpan(
                   text: (uVal == 0) ? "" : uVal.toString(),
-                  style: TextStyle(color: Colors.black, fontSize: 15.0),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: fSize, fontFamily: 'u_m'),
                 ),
                 WidgetSpan(
-                  child: Icon(iconsWidget, size: 16.0),
+                  child: Icon(iconsWidget, size: iSize),
                 ),
               ],
             ),
@@ -187,36 +179,86 @@ class _MyHomePageState extends State<MyHomePage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(25.0))),
           title: Text('Confirm to Remove'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    child: Image.asset(flag),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          content: Container(
+            height: 100,
+            child: Card(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(100.0)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Row(
                   children: <Widget>[
-                    Text(
-                      '${countryData.country}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
+                    CircleAvatar(
+                      radius: 30.0,
+                      backgroundColor: Colors.grey,
+                      child: CircleAvatar(
+                        radius: 26.0,
+                        backgroundImage: AssetImage(flag),
                       ),
                     ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10.0, left: 5.0),
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(width: 5),
+                                  Expanded(
+                                    child: Text(
+                                      countryData.country,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 14.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Divider(
+                                thickness: 1,
+                                height: 10.0,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: getValWithUpdateVal(
+                                  countryData.totalConfirmed,
+                                  countryData.newConfirmed,
+                                  Colors.amber[700],
+                                  fSize: 12.0,
+                                  iSize: 14.0),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: getValWithUpdateVal(
+                                  countryData.totalDeaths,
+                                  countryData.newDeaths,
+                                  Colors.red[700],
+                                  fSize: 12.0,
+                                  iSize: 14.0),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: getValWithUpdateVal(
+                                  countryData.totalRecovered,
+                                  countryData.newRecovered,
+                                  Colors.green[500],
+                                  fSize: 12.0,
+                                  iSize: 14.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              ],
+              ),
             ),
           ),
           actions: <Widget>[
@@ -252,8 +294,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget getBookmarkedCarousel() {
-    if (bookmarked.length == 0) {
-      return SizedBox(height: 10.0);
+    if (bookmarked.isEmpty) {
+      return Text("No Bookmark Added",
+          style: TextStyle(color: Colors.grey[500]));
     }
     return CarouselSlider.builder(
       itemCount: bookmarked.length,
@@ -337,8 +380,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             flex: 1,
                             child: getValWithUpdateVal(
                                 countryData.totalRecovered,
-                                countryData.totalRecovered,
-                                Colors.green[700]),
+                                countryData.newRecovered,
+                                Colors.green[500]),
                           ),
                         ],
                       ),
@@ -351,15 +394,15 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
       options: CarouselOptions(
-        height: 135,
-        viewportFraction: 0.9,
-        initialPage: 0,
-        autoPlay: true,
-        scrollDirection: Axis.vertical,
-        autoPlayInterval: Duration(seconds: 5),
-        enlargeCenterPage: true,
-        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-      ),
+          height: 135,
+          viewportFraction: 0.9,
+          initialPage: 0,
+          autoPlay: true,
+          scrollDirection: Axis.vertical,
+          autoPlayInterval: Duration(seconds: 5),
+          enlargeCenterPage: true,
+          enlargeStrategy: CenterPageEnlargeStrategy.scale,
+          enableInfiniteScroll: false),
     );
   }
 
@@ -408,8 +451,16 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: <Widget>[
             getBookmarkedCarousel(),
+            (bookmarked.length == 0)
+                ? SizedBox(
+                    height: 20.0,
+                  )
+                : Text(
+                    "Long Press to Remove",
+                    style: TextStyle(color: Colors.grey[500]),
+                  ),
             SizedBox(
-              height: 30.0,
+              height: 10.0,
             ),
             Expanded(
               child: Container(
@@ -463,8 +514,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 "Felling Sick?\nConsult Your Doctor.",
                                 headImage: AssetImage(
                                     "assets/images/sick_person_white.png")),
-                            getSlideWidget("What is Covid19?",
-                                isBlackBox: false, headIcon: "?", onClick: () {
+                            getSlideWidget("Fever, Cough, Shortness of breath",
+                                isBlackBox: false,
+                                headIcon: "Symptoms ?", onClick: () {
                               showCovidInfo();
                             }),
                             getSlideWidget("Fight COVID 19",
@@ -489,8 +541,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 isBlackBox: false,
                                 headImage: AssetImage(
                                     "assets/images/sick_person.png")),
-                            getSlideWidget("What is Covid19?", headIcon: "?",
-                                onClick: () {
+                            getSlideWidget("Fever, Cough, Shortness of breath",
+                                headIcon: "Symptoms ?", onClick: () {
                               showCovidInfo();
                             }),
                           ],

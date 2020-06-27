@@ -92,8 +92,8 @@ class _CountryFullPageState extends State<CountryFullPage> {
     );
   }
 
-  Widget getValWithUpdateVal(
-      int val, int uVal, Color valColor, Color uValColor) {
+  Widget getValWithUpdateVal(int val, int uVal, Color valColor, Color uValColor,
+      {String tag = ""}) {
     var iconsWidget;
     if (uVal > 0)
       iconsWidget = Icons.arrow_upward;
@@ -104,6 +104,10 @@ class _CountryFullPageState extends State<CountryFullPage> {
 
     return Column(
       children: <Widget>[
+        Text(tag, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+        Divider(
+          height: 5.0,
+        ),
         Text(
           val.toString(),
           style: TextStyle(color: valColor, fontFamily: 'u_m', fontSize: 20.0),
@@ -119,7 +123,8 @@ class _CountryFullPageState extends State<CountryFullPage> {
               ),
               TextSpan(
                 text: (uVal == 0) ? "" : uVal.toString(),
-                style: TextStyle(color: Colors.black, fontSize: 16.0),
+                style: TextStyle(
+                    color: Colors.grey[700], fontSize: 18.0, fontFamily: 'u_m'),
               ),
             ],
           ),
@@ -336,11 +341,14 @@ class _CountryFullPageState extends State<CountryFullPage> {
     if (countryData != null) {
       covidWidgets = [
         getValWithUpdateVal(countryData.totalConfirmed,
-            countryData.newConfirmed, Colors.amber[700], Colors.amber[700]),
+            countryData.newConfirmed, Colors.amber[700], Colors.amber[700],
+            tag: "Confirmed"),
         getValWithUpdateVal(countryData.totalDeaths, countryData.newDeaths,
-            Colors.red[700], Colors.red[700]),
+            Colors.red[700], Colors.red[700],
+            tag: "Deaths"),
         getValWithUpdateVal(countryData.totalRecovered,
-            countryData.newRecovered, Colors.green[700], Colors.green[700])
+            countryData.newRecovered, Colors.green[700], Colors.green[700],
+            tag: "Recovered")
       ];
       lastUpdateDate = "Updated: " + getReadableDateTime(countryData.date);
     }
@@ -391,7 +399,7 @@ class _CountryFullPageState extends State<CountryFullPage> {
                   delegate: SliverChildListDelegate(
                     [
                       getDetailsCard(getBasicDetailsWIdgetList(
-                              countryDetails, covidWidgets, lastUpdateDate)),
+                          countryDetails, covidWidgets, lastUpdateDate)),
                       getDetailsCard(getExtraDetailsWidgetList(countryDetails)),
                       getDetailsCard(getMiscDetailsWidgetList(countryDetails)),
                       getDetailsCard(getBordersWidgets(countryDetails.borders)),

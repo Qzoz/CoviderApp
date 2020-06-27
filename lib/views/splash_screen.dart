@@ -3,7 +3,6 @@ import 'package:covider/services/data_service_impl.dart';
 import 'package:flutter/material.dart';
 
 class CovidSplashPage extends StatefulWidget {
-
   CovidSplashPage({this.dataService});
 
   final DataService dataService;
@@ -22,7 +21,9 @@ class _CovidSplashPageState extends State<CovidSplashPage>
 
   @override
   void initState() {
-    _loading = SizedBox(height: 80.0,);
+    _loading = SizedBox(
+      height: 80.0,
+    );
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1500),
@@ -45,7 +46,11 @@ class _CovidSplashPageState extends State<CovidSplashPage>
   }
 
   void displayInSnackBar(String text, int duraSec) {
-    Widget widget = Icon(Icons.network_check, size: 40.0, color: Colors.grey,);
+    Widget widget = Icon(
+      Icons.network_check,
+      size: 40.0,
+      color: Colors.grey,
+    );
     setState(() {
       _loading = widget;
     });
@@ -58,10 +63,14 @@ class _CovidSplashPageState extends State<CovidSplashPage>
   void checkForData() async {
     await Future.delayed(Duration(seconds: 2));
     List res = await syncData(widget.dataService);
-    if (!res[0]) displayInSnackBar(res[1], 3);
-    else setState(() {
-      _loading = CircularProgressIndicator(strokeWidth: 10.0,);
-    });
+    if (!res[0])
+      displayInSnackBar(res[1], 3);
+    else
+      setState(() {
+        _loading = CircularProgressIndicator(
+          strokeWidth: 10.0,
+        );
+      });
     await Future.delayed(Duration(seconds: 4));
     Navigator.popAndPushNamed(context, '/home');
   }
@@ -70,7 +79,7 @@ class _CovidSplashPageState extends State<CovidSplashPage>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-      key: globalScaffoldKey,
+        key: globalScaffoldKey,
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -84,12 +93,9 @@ class _CovidSplashPageState extends State<CovidSplashPage>
                     height: 30.0,
                   ),
                   Text(
-                    "by Mzq",
+                    "by Qzoz",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 14.0
-                    ),
+                    style: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                   ),
                   SizedBox(
                     height: 10.0,
@@ -99,7 +105,9 @@ class _CovidSplashPageState extends State<CovidSplashPage>
                     width: MediaQuery.of(context).size.width / 3,
                     color: Colors.grey,
                   ),
-                  SizedBox(height: 50.0,)
+                  SizedBox(
+                    height: 50.0,
+                  )
                 ],
               ),
             ),
