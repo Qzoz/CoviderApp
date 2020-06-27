@@ -6,6 +6,7 @@ import 'package:covider/views/country_full_page.dart';
 import 'package:covider/views/global_data_page.dart';
 import 'package:covider/views/home_page.dart';
 import 'package:covider/views/splash_screen.dart';
+import 'package:device_simulator/device_simulator.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,15 +25,22 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.white,
         fontFamily: 'm_a',
       ),
-      initialRoute: '/splashScreen',
+      home: DeviceSimulator(
+          child: MyHomePage(dataService: dataService, title: "Home")),
+      // initialRoute: '/splashScreen',
       routes: {
-        '/splashScreen': (BuildContext ctx) => CovidSplashPage(dataService: dataService,),
-        '/home': (BuildContext ctx) => MyHomePage(dataService: dataService, title: "Home"),
+        '/splashScreen': (BuildContext ctx) => CovidSplashPage(
+              dataService: dataService,
+            ),
+        '/home': (BuildContext ctx) =>
+            MyHomePage(dataService: dataService, title: "Home"),
         '/globalData': (BuildContext ctx) =>
             GlobalDataPage(dataService: dataService, title: "Global Data"),
-        '/countryList': (BuildContext ctx) =>
-            CountryDataListPage(dataService: dataService, title: "Country List"),
-        '/countryFull': (BuildContext ctx) => CountryFullPage(dataService: dataService,),
+        '/countryList': (BuildContext ctx) => CountryDataListPage(
+            dataService: dataService, title: "Country List"),
+        '/countryFull': (BuildContext ctx) => CountryFullPage(
+              dataService: dataService,
+            ),
         '/about': (BuildContext ctx) => AboutPage(),
       },
     );
