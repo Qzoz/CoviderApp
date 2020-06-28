@@ -90,7 +90,7 @@ class _CovidDataListFilterState extends State<CovidDataListFilter> {
       children: <Widget>[
         Card(
           color: Colors.black,
-          elevation: 15.0,
+          elevation: 5.0,
           shadowColor: Colors.white70,
           child: Column(
             children: <Widget>[
@@ -148,7 +148,7 @@ class _CovidDataListFilterState extends State<CovidDataListFilter> {
         ),
         Card(
           color: Colors.black,
-          elevation: 15.0,
+          elevation: 5.0,
           shadowColor: Colors.white70,
           child: Column(
             children: <Widget>[
@@ -200,8 +200,8 @@ class _CovidDataListFilterState extends State<CovidDataListFilter> {
                                 ? Colors.white
                                 : Colors.black),
                       ),
-                      selected:
-                          sortMap["type"] == "Deaths" && sortMap["flag"] == true,
+                      selected: sortMap["type"] == "Deaths" &&
+                          sortMap["flag"] == true,
                       checkmarkColor: Colors.white,
                       selectedColor: Colors.black,
                       onSelected: (isSelected) {
@@ -303,7 +303,7 @@ class _CovidDataListFilterState extends State<CovidDataListFilter> {
         ),
         Card(
           color: Colors.black,
-          elevation: 15.0,
+          elevation: 5.0,
           shadowColor: Colors.white70,
           child: Column(
             children: <Widget>[
@@ -339,7 +339,7 @@ class _CovidDataListFilterState extends State<CovidDataListFilter> {
         ),
         Card(
           color: Colors.black,
-          elevation: 15.0,
+          elevation: 5.0,
           shadowColor: Colors.white70,
           child: Column(
             children: <Widget>[
