@@ -95,7 +95,6 @@ class _GlobalDataPageState extends State<GlobalDataPage> {
         title: Text(
           widget.title,
           style: TextStyle(
-            fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),

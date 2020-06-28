@@ -1,5 +1,6 @@
 import 'package:covider/services/data_service.dart';
 import 'package:covider/services/data_service_impl.dart';
+import 'package:covider/views/about_covid.dart';
 import 'package:covider/views/about_page.dart';
 import 'package:covider/views/countries_data_page.dart';
 import 'package:covider/views/country_full_page.dart';
@@ -25,9 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.white,
         fontFamily: 'm_a',
       ),
-      home: DeviceSimulator(
-          child: MyHomePage(dataService: dataService, title: "Home")),
-      // initialRoute: '/splashScreen',
+      initialRoute: '/splashScreen',
       routes: {
         '/splashScreen': (BuildContext ctx) => CovidSplashPage(
               dataService: dataService,
@@ -42,6 +41,7 @@ class MyApp extends StatelessWidget {
               dataService: dataService,
             ),
         '/about': (BuildContext ctx) => AboutPage(),
+        '/aboutCovid': (BuildContext ctx) => CovidInfoModalFullScreen(),
       },
     );
   }

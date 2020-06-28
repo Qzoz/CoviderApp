@@ -27,6 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String updateTimeNews = "";
   DataService dataService;
   DateTime lastBackPress;
+  double _fontFactor = 1.0;
 
   @override
   void initState() {
@@ -77,7 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (headIcon != null) {
       head = Text(
         headIcon,
-        style: TextStyle(color: fgColor, fontSize: 20.0, fontFamily: 'u_m'),
+        style: TextStyle(
+            color: fgColor, fontSize: 20.0 / _fontFactor, fontFamily: 'u_m'),
       );
     }
     if (headImage != null) {
@@ -104,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 10),
                 Text(
                   tag,
-                  style: TextStyle(color: fgColor, fontSize: tagSize),
+                  style: TextStyle(
+                      color: fgColor, fontSize: tagSize / _fontFactor),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -139,8 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text(
             val.toString(),
             textAlign: TextAlign.right,
-            style:
-                TextStyle(color: valColor, fontFamily: 'u_m', fontSize: fSize),
+            style: TextStyle(
+                color: valColor,
+                fontFamily: 'u_m',
+                fontSize: fSize / _fontFactor),
           ),
         ),
         Expanded(
@@ -152,7 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 TextSpan(
                   text: (uVal == 0) ? "" : uVal.toString(),
                   style: TextStyle(
-                      color: Colors.black, fontSize: fSize, fontFamily: 'u_m'),
+                      color: Colors.black,
+                      fontSize: fSize / _fontFactor,
+                      fontFamily: 'u_m'),
                 ),
                 WidgetSpan(
                   child: Icon(iconsWidget, size: iSize),
@@ -174,8 +181,10 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black87,
-          titleTextStyle:
-              TextStyle(fontSize: 16.0, color: Colors.white, fontFamily: 'm_a'),
+          titleTextStyle: TextStyle(
+              fontSize: 16.0 / _fontFactor,
+              color: Colors.white,
+              fontFamily: 'm_a'),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(25.0))),
           title: Text('Confirm to Remove'),
@@ -212,7 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: Text(
                                       countryData.country,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 14.0),
+                                      style: TextStyle(
+                                          fontSize: 14.0 / _fontFactor),
                                     ),
                                   ),
                                 ],
@@ -415,6 +425,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    if (screenSize.width < 360) _fontFactor = 1.1;
     updateAll();
     return WillPopScope(
       onWillPop: _closeAppOn2ndTap,
@@ -426,7 +438,6 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(
             widget.title,
             style: TextStyle(
-              fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -549,17 +560,35 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       SizedBox(height: 25.0),
-                      HomeOptions(() {
-                        Navigator.pushNamed(context, '/globalData');
-                      }, true, "assets/images/growth.png", "Global Data",
-                          textDisp2: "Last Updated: " + updateTime),
-                      HomeOptions(() {
-                        Navigator.pushNamed(context, '/countryList');
-                      }, false, "assets/images/map.png", "Country Data",
-                          textDisp2: "Last Updated: " + updateTime),
-                      HomeOptions(() {
-                        showCovidInfo();
-                      }, true, "assets/images/news.png", "COVID-19 ?"),
+                      HomeOptions(
+                        () {
+                          Navigator.pushNamed(context, '/globalData');
+                        },
+                        true,
+                        "assets/images/growth.png",
+                        "Global Data",
+                        textDisp2: "Last Updated: " + updateTime,
+                        fontFactor: _fontFactor,
+                      ),
+                      HomeOptions(
+                        () {
+                          Navigator.pushNamed(context, '/countryList');
+                        },
+                        false,
+                        "assets/images/map.png",
+                        "Country Data",
+                        textDisp2: "Last Updated: " + updateTime,
+                        fontFactor: _fontFactor,
+                      ),
+                      HomeOptions(
+                        () {
+                          showCovidInfo();
+                        },
+                        true,
+                        "assets/images/news.png",
+                        "COVID-19 ?",
+                        fontFactor: _fontFactor,
+                      ),
                     ],
                   ),
                 ),

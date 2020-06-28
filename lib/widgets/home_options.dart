@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class HomeOptions extends StatefulWidget {
   HomeOptions(this.onPressed, this.isLeft, this.imageURL, this.textDisp,
-      {this.textDisp2});
+      {this.textDisp2, this.fontFactor});
 
   final Function onPressed;
   final bool isLeft;
   final String imageURL;
   final String textDisp;
   final String textDisp2;
+  final double fontFactor;
 
   @override
   _HomeOptionsState createState() => _HomeOptionsState();
@@ -20,7 +21,7 @@ class _HomeOptionsState extends State<HomeOptions> {
       text,
       style: TextStyle(
         color: Colors.white,
-        fontSize: 16.0,
+        fontSize: 16.0 / widget.fontFactor,
         fontWeight: FontWeight.w600,
       ),
     );
@@ -30,7 +31,7 @@ class _HomeOptionsState extends State<HomeOptions> {
     return Text(
       text,
       style: TextStyle(
-        fontSize: 10.0,
+        fontSize: 10.0 / widget.fontFactor,
         color: Colors.white70,
       ),
     );

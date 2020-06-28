@@ -17,6 +17,7 @@ class CovidCountryDataListView extends StatefulWidget {
 class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return ListView.separated(
       itemBuilder: (BuildContext context, int index) {
         CountryData covidData = widget.covidDataList[index];
@@ -45,7 +46,11 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: 10.0, bottom: 3.0),
-                  child: Text(covidData.country),
+                  child: Text(
+                    covidData.country,
+                    maxLines: (width < 360) ? 1 : 10,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Positioned(
                   right: 0,
@@ -70,12 +75,21 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Confirmed: "),
-                      Text(
-                        covidData.totalConfirmed.toString(),
-                        style: TextStyle(
-                          color: Colors.amber[700],
-                          fontFamily: 'u_m',
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Confirmed: ",
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          covidData.totalConfirmed.toString(),
+                          style: TextStyle(
+                            color: Colors.amber[700],
+                            fontFamily: 'u_m',
+                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ),
                     ],
@@ -83,12 +97,21 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Deaths: "),
-                      Text(
-                        covidData.totalDeaths.toString(),
-                        style: TextStyle(
-                          color: Colors.red[700],
-                          fontFamily: 'u_m',
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Deaths: ",
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          covidData.totalDeaths.toString(),
+                          style: TextStyle(
+                            color: Colors.red[700],
+                            fontFamily: 'u_m',
+                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ),
                     ],
@@ -96,12 +119,21 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Recovered: "),
-                      Text(
-                        covidData.totalRecovered.toString(),
-                        style: TextStyle(
-                          color: Colors.green[700],
-                          fontFamily: 'u_m',
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Recovered: ",
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          covidData.totalRecovered.toString(),
+                          style: TextStyle(
+                            color: Colors.green[700],
+                            fontFamily: 'u_m',
+                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ),
                     ],
@@ -113,11 +145,20 @@ class _CovidCountryDataListViewState extends State<CovidCountryDataListView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Population: "),
-                      Text(
-                        countryDetails.population.toString(),
-                        style: TextStyle(
-                          fontFamily: 'u_m',
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Population: ",
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          countryDetails.population.toString(),
+                          style: TextStyle(
+                            fontFamily: 'u_m',
+                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ),
                     ],

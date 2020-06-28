@@ -15,11 +15,12 @@ class CountryFullPage extends StatefulWidget {
 }
 
 class _CountryFullPageState extends State<CountryFullPage> {
-  final double expandedHeight = 200.0;
+  double expandedHeight = 200.0;
 
   DataService dataService;
   double _scrollOffset = 200.0;
   ScrollController scrollController;
+  bool isStateStarted = true;
 
   @override
   void initState() {
@@ -332,7 +333,16 @@ class _CountryFullPageState extends State<CountryFullPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     final Map parentArgs = ModalRoute.of(context).settings.arguments;
+    if (parentArgs == null)
+      return Scaffold(
+        body: Container(
+          child: Center(
+            child: Text("Unable to load Data"),
+          ),
+        ),
+      );
     CountryDetails countryDetails = parentArgs['details'];
     CountryData countryData =
         dataService.getCovidDataByCode(countryDetails.a2Code);
@@ -352,6 +362,26 @@ class _CountryFullPageState extends State<CountryFullPage> {
       ];
       lastUpdateDate = "Updated: " + getReadableDateTime(countryData.date);
     }
+    if (isStateStarted) {
+      if (width > 410) {
+        setState(() {
+          isStateStarted = false;
+          _scrollOffset = 250.0;
+          expandedHeight = 250.0;
+        });
+      }
+      if (width > 600) {
+        setState(() {
+          isStateStarted = false;
+          _scrollOffset = 350.0;
+          expandedHeight = 350.0;
+        });
+      }
+    }
+
+    double opacity = _scrollOffset / this.expandedHeight;
+    if (opacity <= 0.0) opacity = 0.0;
+    if (opacity >= 1.0) opacity = 1.0;
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -359,8 +389,9 @@ class _CountryFullPageState extends State<CountryFullPage> {
         child: Stack(
           children: [
             Opacity(
-              opacity: _scrollOffset / this.expandedHeight,
+              opacity: opacity,
               child: Container(
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
@@ -376,6 +407,7 @@ class _CountryFullPageState extends State<CountryFullPage> {
                     tag: 'hero-img-' + countryDetails.a3Code,
                     child: Image.asset(
                       countryDetails.getFlagPathInAssets(),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -383,6 +415,7 @@ class _CountryFullPageState extends State<CountryFullPage> {
             ),
             CustomScrollView(
               controller: scrollController,
+              physics: BouncingScrollPhysics(),
               slivers: <Widget>[
                 SliverPersistentHeader(
                   delegate: CoviderSliverWidget(
