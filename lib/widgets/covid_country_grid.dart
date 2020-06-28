@@ -15,37 +15,101 @@ class CovidCountryDataGridView extends StatefulWidget {
 }
 
 class _CovidCountryDataGridViewState extends State<CovidCountryDataGridView> {
-  String getAdjustedCountryName(String name) {
-    String str = "";
-    int ctr = 0;
-    for (int i = 0; i < name.length; i++) {
-      if (name[i] == '(') {
-        ctr += 1;
-      }
-      if (ctr == 0) {
-        str += name[i].toString();
-      }
-      if (name[i] == ')') {
-        ctr -= 1;
-      }
-    }
-    return str;
-  }
-
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double aspectRatio = 1 / 1.8;
+    int gridChildPerRow = 2;
+    if (width > 360) {
+      aspectRatio = 1 / 1.65;
+    }
+    if (width > 400) {
+      aspectRatio = 1 / 1.55;
+    }
+    if (width > 479) {
+      aspectRatio = 1 / 1.30;
+    }
+    if (width >= 540) {
+      gridChildPerRow = 3;
+      aspectRatio = 1 / 1.75;
+    }
+    if (width >= 600) {
+      gridChildPerRow = 3;
+      aspectRatio = 1 / 1.55;
+    }
+    if (width >= 768) {
+      gridChildPerRow = 4;
+      aspectRatio = 1 / 1.55;
+    }
+    if (width >= 800) {
+      gridChildPerRow = 4;
+      aspectRatio = 1 / 1.50;
+    }
     return GridView.builder(
-      itemCount: widget.covidDataList.length + 1,
+      itemCount: widget.covidDataList.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1 / 1.8,
+        crossAxisCount: gridChildPerRow,
+        childAspectRatio: aspectRatio,
       ),
       itemBuilder: (BuildContext context, int index) {
         CountryData covidData = widget.covidDataList[index];
         CountryDetails countryDetails =
             widget.dataService.getCountryDataByCode(covidData.countryCode);
-        if (index == 0) {
-          Chip(label: Text("Long Press to Bookmark"));
+        var population = <Widget>[
+          Divider(
+            thickness: 2,
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                "Population",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12.0,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                countryDetails.population.toString(),
+                style: TextStyle(
+                  fontFamily: 'u_m',
+                ),
+              ),
+            ],
+          ),
+        ];
+        if (width < 360) {
+          population = <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Population",
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12.0,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    countryDetails.population.toString(),
+                    style: TextStyle(
+                      fontFamily: 'u_m',
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+          ];
         }
         return GridTile(
           child: Card(
@@ -122,13 +186,12 @@ class _CovidCountryDataGridViewState extends State<CovidCountryDataGridView> {
                             ),
                             Expanded(
                               child: Tooltip(
-                                message:
-                                    getAdjustedCountryName(covidData.country),
+                                message: covidData.country,
                                 waitDuration: Duration(seconds: 1),
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 5.0),
                                   child: Text(
-                                    getAdjustedCountryName(covidData.country),
+                                    covidData.country,
                                     textAlign: TextAlign.left,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -162,40 +225,26 @@ class _CovidCountryDataGridViewState extends State<CovidCountryDataGridView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                "Confirmed: ",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 12.0,
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  "Confirmed: ",
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 12.0,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              Text(
-                                covidData.totalConfirmed.toString(),
-                                style: TextStyle(
-                                  color: Colors.amber[700],
-                                  fontFamily: 'u_m',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Deaths: ",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 12.0,
-                                ),
-                              ),
-                              Text(
-                                covidData.totalDeaths.toString(),
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                  fontFamily: 'u_m',
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  covidData.totalConfirmed.toString(),
+                                  style: TextStyle(
+                                    color: Colors.amber[700],
+                                    fontFamily: 'u_m',
+                                  ),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],
@@ -206,55 +255,66 @@ class _CovidCountryDataGridViewState extends State<CovidCountryDataGridView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                "Recovered: ",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 12.0,
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  "Deaths: ",
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 12.0,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              Text(
-                                covidData.totalRecovered.toString(),
-                                style: TextStyle(
-                                  color: Colors.green[700],
-                                  fontFamily: 'u_m',
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  covidData.totalDeaths.toString(),
+                                  style: TextStyle(
+                                    color: Colors.red[700],
+                                    fontFamily: 'u_m',
+                                  ),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Divider(
-                          thickness: 2,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  "Recovered: ",
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 12.0,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  covidData.totalRecovered.toString(),
+                                  style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontFamily: 'u_m',
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "Population",
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 12.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    countryDetails.population.toString(),
-                                    style: TextStyle(
-                                      fontFamily: 'u_m',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: population),
                         ),
                       ],
                     ),

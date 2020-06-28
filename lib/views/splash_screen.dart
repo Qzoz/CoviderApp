@@ -77,9 +77,13 @@ class _CovidSplashPageState extends State<CovidSplashPage>
 
   @override
   Widget build(BuildContext context) {
+    double extras = 0.0;
+    var mediaQuery = MediaQuery.of(context).size;
+    if (mediaQuery.height < 720) extras = 100.0;
     return SafeArea(
       child: Scaffold(
         key: globalScaffoldKey,
+        backgroundColor: Theme.of(context).primaryColor,
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -102,7 +106,7 @@ class _CovidSplashPageState extends State<CovidSplashPage>
                   ),
                   Container(
                     height: 2.0,
-                    width: MediaQuery.of(context).size.width / 3,
+                    width: mediaQuery.width / 3,
                     color: Colors.grey,
                   ),
                   SizedBox(
@@ -111,7 +115,9 @@ class _CovidSplashPageState extends State<CovidSplashPage>
                 ],
               ),
             ),
-            Center(
+            Positioned(
+              left: mediaQuery.width / 2 - 96.0,
+              top: mediaQuery.height / 2 - 96.0 - extras,
               child: Container(
                 height: 192.0,
                 width: 192.0,

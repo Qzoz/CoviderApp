@@ -1,5 +1,6 @@
 import 'package:covider/services/data_service.dart';
 import 'package:covider/services/data_service_impl.dart';
+import 'package:covider/views/about_covid.dart';
 import 'package:covider/views/about_page.dart';
 import 'package:covider/views/countries_data_page.dart';
 import 'package:covider/views/country_full_page.dart';
@@ -26,14 +27,18 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/splashScreen',
       routes: {
-        '/splashScreen': (BuildContext ctx) => CovidSplashPage(dataService: dataService,),
-        '/home': (BuildContext ctx) => MyHomePage(dataService: dataService, title: "Home"),
+        '/splashScreen': (BuildContext ctx) =>
+            CovidSplashPage(dataService: dataService),
+        '/home': (BuildContext ctx) =>
+            MyHomePage(dataService: dataService, title: "Home"),
         '/globalData': (BuildContext ctx) =>
             GlobalDataPage(dataService: dataService, title: "Global Data"),
-        '/countryList': (BuildContext ctx) =>
-            CountryDataListPage(dataService: dataService, title: "Country List"),
-        '/countryFull': (BuildContext ctx) => CountryFullPage(dataService: dataService,),
+        '/countryList': (BuildContext ctx) => CountryDataListPage(
+            dataService: dataService, title: "Country List"),
+        '/countryFull': (BuildContext ctx) =>
+            CountryFullPage(dataService: dataService),
         '/about': (BuildContext ctx) => AboutPage(),
+        '/aboutCovid': (BuildContext ctx) => CovidInfoModalFullScreen(),
       },
     );
   }
