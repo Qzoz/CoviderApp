@@ -417,10 +417,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showCovidInfo() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => CovidInfoModalFullScreen()));
+    Navigator.pushNamed(context, '/aboutCovid');
   }
 
   @override
